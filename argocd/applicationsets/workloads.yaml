@@ -11,7 +11,7 @@ spec:
     - matrix:
         generators:
           - git:
-              repoURL: https://git.example.com/platform/gitops.git
+              repoURL: git@github.com:celeguim/gitops.git
               revision: prd
               files:
                 - path: clusters/*/*.yaml
@@ -31,7 +31,7 @@ spec:
     spec:
       project: prd
       source:
-        repoURL: https://git.example.com/platform/gitops.git
+        repoURL: git@github.com:celeguim/gitops.git
         targetRevision: prd
         path: '{{ .path }}'
       destination:

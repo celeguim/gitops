@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://git.example.com/platform/gitops.git
+    repoURL: git@github.com:celeguim/gitops.git
     targetRevision: prd
     path: argocd/root
   destination:

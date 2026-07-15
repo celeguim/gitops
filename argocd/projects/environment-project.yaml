@@ -6,7 +6,7 @@ metadata:
 spec:
   description: Workloads exclusivos de PRD
   sourceRepos:
-    - 'https://git.example.com/platform/gitops.git'
+    - 'git@github.com:celeguim/gitops.git'
   destinations:
     - namespace: '*'
       name: prd-cluster1
