@@ -8,7 +8,9 @@ command -v kubeconform >/dev/null
 helm lint charts/microservice
 
 find . -type f \( -name '*.yaml' -o -name '*.yml' \) \
-  ! -path './.git/*' -print0 | xargs -0 yamllint -c .yamllint
+  ! -path './.git/*' \
+  ! -path './charts/*/templates/*' \
+  -print0 | xargs -0 yamllint -c .yamllint
 
 for app in app1 app2; do
   echo "Rendering $app"
