@@ -6,7 +6,7 @@ metadata:
 spec:
   description: Workloads exclusivos de UAT
   sourceRepos:
-    - 'https://git.example.com/platform/gitops.git'
+    - 'git@github.com:celeguim/gitops.git'
   destinations:
     - namespace: '*'
       name: uat-cluster1
