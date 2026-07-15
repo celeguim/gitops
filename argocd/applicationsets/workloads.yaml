@@ -33,7 +33,7 @@ spec:
       source:
         repoURL: git@github.com:celeguim/gitops.git
         targetRevision: uat
-        path: '{{ .path.path }}'
+        path: '{{ .appPath }}'
       destination:
         name: '{{ .name }}'
         namespace: '{{ .namespace }}'

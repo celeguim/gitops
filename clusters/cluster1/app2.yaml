@@ -1,4 +1,4 @@
 app: app2
 clusterId: cluster1
 namespace: app2
-path: apps/app2/overlays/environment
+appPath: apps/app2/overlays/environment
