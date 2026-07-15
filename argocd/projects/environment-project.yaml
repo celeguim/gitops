@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: uat
+  namespace: argocd
+spec:
+  description: Workloads exclusivos de UAT
+  sourceRepos:
+    - 'https://git.example.com/platform/gitops.git'
+  destinations:
+    - namespace: '*'
+      name: uat-cluster1
+    - namespace: '*'
+      name: uat-cluster2
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  orphanedResources:
+    warn: true

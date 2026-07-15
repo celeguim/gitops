@@ -1,0 +1,4 @@
+app: app1
+clusterId: cluster1
+namespace: app1
+path: apps/app1/overlays/environment
