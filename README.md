@@ -77,7 +77,7 @@ kubectl --context ARGO-PRD -n argocd apply -f argocd/bootstrap/root-app.yaml
 
 ## Validação
 
-Dependências locais: `helm`, `kustomize`, `yamllint`, `kubeconform`, Python + PyYAML.
+Dependências locais: `helm`, `kustomize`, `yamllint` e `kubeconform`.
 
 ```bash
 make validate
