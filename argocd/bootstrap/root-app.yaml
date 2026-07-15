@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-root-uat
+  name: platform-root-prd
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://git.example.com/platform/gitops.git
-    targetRevision: uat
+    targetRevision: prd
     path: argocd/root
   destination:
     server: https://kubernetes.default.svc

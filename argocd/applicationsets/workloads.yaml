@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: workloads-uat
+  name: workloads-prd
   namespace: argocd
 spec:
   goTemplate: true
@@ -12,34 +12,34 @@ spec:
         generators:
           - git:
               repoURL: https://git.example.com/platform/gitops.git
-              revision: uat
+              revision: prd
               files:
                 - path: clusters/*/*.yaml
           - clusters:
               selector:
                 matchLabels:
-                  environment: uat
+                  environment: prd
                   cluster-id: '{{ .clusterId }}'
   template:
     metadata:
       name: '{{ .app }}-{{ .clusterId }}'
       namespace: argocd
       labels:
-        environment: uat
+        environment: prd
         cluster-id: '{{ .clusterId }}'
         application: '{{ .app }}'
     spec:
-      project: uat
+      project: prd
       source:
         repoURL: https://git.example.com/platform/gitops.git
-        targetRevision: uat
+        targetRevision: prd
         path: '{{ .path }}'
       destination:
         name: '{{ .name }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
         automated:
-          prune: true
+          prune: false
           selfHeal: true
           allowEmpty: false
         syncOptions:

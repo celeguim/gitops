@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: app2
 spec:
-  replicas: 2
+  replicas: 4
   template:
     spec:
       containers:
         - name: app2
           env:
             - name: ENVIRONMENT
-              value: uat
+              value: prd
             - name: LOG_LEVEL
-              value: DEBUG
+              value: INFO
