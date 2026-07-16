@@ -1,0 +1,13 @@
+{
+    "deployment": {
+
+        "type": "object",
+
+        "description": "...",
+
+        "properties": {
+
+        }
+
+    }
+}

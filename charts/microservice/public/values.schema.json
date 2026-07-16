@@ -1,0 +1,502 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Enterprise Microservice Platform",
+  "description": "Public configuration API for the Enterprise Microservice Platform Helm Chart.",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+
+    "nameOverride": {
+      "type": "string",
+      "description": "Override the logical application name."
+    },
+
+    "fullnameOverride": {
+      "type": "string",
+      "description": "Override the Kubernetes object name."
+    },
+
+    "namespaceOverride": {
+      "type": "string",
+      "description": "Override the target namespace."
+    },
+
+    "deployment": {
+      "type": "object",
+      "description": "Deployment configuration.",
+      "additionalProperties": false,
+
+      "properties": {
+
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of pod replicas."
+        },
+
+        "strategy": {
+          "type": "object",
+          "additionalProperties": false,
+
+          "properties": {
+
+            "type": {
+              "type": "string",
+              "enum": [
+                "RollingUpdate",
+                "Recreate"
+              ],
+              "description": "Deployment strategy."
+            }
+
+          }
+
+        },
+
+        "pod": {
+
+          "type": "object",
+
+          "additionalProperties": false,
+
+          "properties": {
+
+            "annotations": {
+
+              "type": "object",
+
+              "description": "Pod annotations.",
+
+              "additionalProperties": {
+                "type": "string"
+              }
+
+            },
+
+            "labels": {
+
+              "type": "object",
+
+              "description": "Additional Pod labels.",
+
+              "additionalProperties": {
+                "type": "string"
+              }
+
+            },
+
+            "nodeSelector": {
+
+              "type": "object",
+
+              "additionalProperties": {
+                "type": "string"
+              }
+
+            },
+
+            "affinity": {
+
+              "type": "object"
+
+            },
+
+            "tolerations": {
+
+              "type": "array"
+
+            }
+
+          }
+
+        },
+
+        "container": {
+
+          "type": "object",
+
+          "additionalProperties": false,
+
+          "required": [
+
+            "image"
+
+          ],
+
+          "properties": {
+
+            "image": {
+
+              "type": "object",
+
+              "additionalProperties": false,
+
+              "required": [
+
+                "repository",
+
+                "tag"
+
+              ],
+
+              "properties": {
+
+                "repository": {
+
+                  "type": "string",
+
+                  "description": "Container image repository."
+
+                },
+
+                "tag": {
+
+                  "type": "string",
+
+                  "description": "Container image tag."
+
+                },
+
+                "pullPolicy": {
+
+                  "type": "string",
+
+                  "enum": [
+
+                    "Always",
+
+                    "IfNotPresent",
+
+                    "Never"
+
+                  ],
+
+                  "description": "Image pull policy."
+
+                }
+
+              }
+
+            },
+
+            "resources": {
+
+              "type": "object",
+
+              "description": "Container resource requests and limits."
+
+            },
+
+            "env": {
+
+              "type": "array",
+
+              "description": "Environment variables."
+
+            },
+
+            "envFrom": {
+
+              "type": "array",
+
+              "description": "Environment sources."
+
+            },
+
+            "probes": {
+
+              "type": "object",
+
+              "additionalProperties": false,
+
+              "properties": {
+
+                "startup": {
+
+                  "type": "object"
+
+                },
+
+                "readiness": {
+
+                  "type": "object"
+
+                },
+
+                "liveness": {
+
+                  "type": "object"
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "service": {
+
+      "type": "object",
+
+      "description": "Service configuration.",
+
+      "additionalProperties": false,
+
+      "properties": {
+
+        "enabled": {
+
+          "type": "boolean"
+
+        },
+
+        "type": {
+
+          "type": "string",
+
+          "enum": [
+
+            "ClusterIP",
+
+            "NodePort",
+
+            "LoadBalancer",
+
+            "ExternalName"
+
+          ]
+
+        },
+
+        "port": {
+
+          "type": "integer",
+
+          "minimum": 1,
+
+          "maximum": 65535
+
+        },
+
+        "targetPort": {
+
+          "description": "Target container port.",
+
+          "oneOf": [
+
+            {
+              "type": "integer"
+            },
+
+            {
+              "type": "string"
+            }
+
+          ]
+
+        },
+
+        "annotations": {
+
+          "type": "object",
+
+          "additionalProperties": {
+            "type": "string"
+          }
+
+        }
+
+      }
+
+    },
+
+    "autoscaling": {
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "properties": {
+
+        "enabled": {
+
+          "type": "boolean"
+
+        },
+
+        "minReplicas": {
+
+          "type": "integer",
+
+          "minimum": 1
+
+        },
+
+        "maxReplicas": {
+
+          "type": "integer",
+
+          "minimum": 1
+
+        },
+
+        "metrics": {
+
+          "type": "object",
+
+          "additionalProperties": false,
+
+          "properties": {
+
+            "cpu": {
+
+              "type": "object",
+
+              "additionalProperties": false,
+
+              "properties": {
+
+                "enabled": {
+
+                  "type": "boolean"
+
+                },
+
+                "averageUtilization": {
+
+                  "type": "integer",
+
+                  "minimum": 1,
+
+                  "maximum": 100
+
+                }
+
+              }
+
+            },
+
+            "memory": {
+
+              "type": "object",
+
+              "additionalProperties": false,
+
+              "properties": {
+
+                "enabled": {
+
+                  "type": "boolean"
+
+                },
+
+                "averageUtilization": {
+
+                  "type": "integer",
+
+                  "minimum": 1,
+
+                  "maximum": 100
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "serviceAccount": {
+
+      "type": "object",
+
+      "additionalProperties": false,
+
+      "properties": {
+
+        "create": {
+
+          "type": "boolean"
+
+        },
+
+        "name": {
+
+          "type": "string"
+
+        },
+
+        "annotations": {
+
+          "type": "object",
+
+          "additionalProperties": {
+
+            "type": "string"
+
+          }
+
+        }
+
+      }
+
+    },
+
+    "ingress": {
+
+      "type": "object"
+
+    },
+
+    "monitoring": {
+
+      "type": "object"
+
+    },
+
+    "security": {
+
+      "type": "object"
+
+    },
+
+    "network": {
+
+      "type": "object"
+
+    },
+
+    "rollout": {
+
+      "type": "object"
+
+    }
+
+  },
+
+  "required": [
+
+    "deployment",
+
+    "service",
+
+    "autoscaling",
+
+    "serviceAccount"
+
+  ]
+}
