@@ -1,0 +1,5 @@
+No nosso próximo passo, eu sugiro fazermos exatamente isso com os arquivos reais da v2.3, comando por comando: abrir app1.yaml → abrir workloads.yaml → inspecionar a Application gerada → abrir o kustomization.yaml → executar helm template → executar kustomize build --enable-helm → comparar os manifests. Aí conseguimos seguir a app1 como se estivéssemos fazendo um debug de código, variável por variável.
+
+k port-forward -n argocd service/argocd-server 8080:80
+argocd admin initial-password -n argocd
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
