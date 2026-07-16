@@ -1,82 +1,44 @@
-{{/*
-==============================================================================
-Enterprise Microservice Platform (EMP)
-
-Deployment
-
-Responsibilities
-
-- Create the Deployment resource
-- Configure replica strategy
-- Assemble the Pod specification
-- Delegate reusable logic to the Helm Library
-
-This template intentionally contains minimal business logic.
-==============================================================================*/}}
-
 apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: {{ include "microservice.fullname" . }}
-  namespace: {{ include "microservice.namespace" . }}
-
+  name: {{ .Release.Name }}
   labels:
-{{ include "microservice.labels" . | nindent 4 }}
+    app: {{ .Release.Name }}
 
 spec:
-
   replicas: {{ .Values.deployment.replicaCount }}
-
-  strategy:
-    type: {{ .Values.deployment.strategy.type }}
 
   selector:
     matchLabels:
-{{ include "microservice.selectorLabels" . | nindent 6 }}
+      app: {{ .Release.Name }}
 
   template:
-
     metadata:
-
       labels:
-{{ include "microservice.selectorLabels" . | nindent 8 }}
-
-{{- with .Values.deployment.pod.labels }}
-{{ toYaml . | nindent 8 }}
-{{- end }}
-
-{{- with .Values.deployment.pod.annotations }}
-
-      annotations:
-{{ toYaml . | nindent 8 }}
-
-{{- end }}
+        app: {{ .Release.Name }}
 
     spec:
-
-      serviceAccountName: {{ include "microservice.serviceAccountName" . }}
-
-{{- with .Values.deployment.pod.nodeSelector }}
-
-      nodeSelector:
-{{ toYaml . | nindent 8 }}
-
-{{- end }}
-
-{{- with .Values.deployment.pod.affinity }}
-
-      affinity:
-{{ toYaml . | nindent 8 }}
-
-{{- end }}
-
-{{- with .Values.deployment.pod.tolerations }}
-
-      tolerations:
-{{ toYaml . | nindent 8 }}
-
-{{- end }}
-
       containers:
-{{ include "microservice.container" . | nindent 8 }}
+        - name: app
+
+          image: "{{ .Values.deployment.container.image.repository }}:{{ .Values.deployment.container.image.tag }}"
+
+          imagePullPolicy: {{ .Values.deployment.container.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.deployment.container.port }}
+
+          resources:
+{{ toYaml .Values.deployment.container.resources | indent 12 }}
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.deployment.container.probes.readiness.path }}
+              port: {{ .Values.deployment.container.port }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.deployment.container.probes.liveness.path }}
+              port: {{ .Values.deployment.container.port }}
+              

@@ -1,77 +1,46 @@
 deployment:
   replicaCount: 2
 
-  strategy:
-    type: RollingUpdate
-
-  pod:
-    labels: {}
-    annotations: {}
-    nodeSelector: {}
-    affinity: {}
-    tolerations: []
-    imagePullSecrets: []
-    securityContext: {}
-
   container:
     image:
       repository: celeguim/jvminfo
       tag: v3
       pullPolicy: IfNotPresent
 
-    resources: {}
+    port: 8080
 
-    env: []
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
 
-    envFrom: []
+      limits:
+        cpu: "1"
+        memory: 512Mi
 
     probes:
-      startup:
-        enabled: false
-
       readiness:
         enabled: true
         path: /actuator/health/readiness
-        port: 8080
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        timeoutSeconds: 1
-        successThreshold: 1
-        failureThreshold: 3
 
       liveness:
         enabled: true
         path: /actuator/health/liveness
-        port: 8080
-        initialDelaySeconds: 30
-        periodSeconds: 10
-        timeoutSeconds: 1
-        successThreshold: 1
-        failureThreshold: 3
 
 service:
-  enabled: true
   type: ClusterIP
   port: 8080
   targetPort: 8080
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 2
   maxReplicas: 5
 
-  metrics:
-    cpu:
-      enabled: true
-      averageUtilization: 70
-
-    memory:
-      enabled: false
-      averageUtilization: 80
+  cpu:
+    targetUtilization: 70
 
 serviceAccount:
   create: true
   name: ""
-  annotations: {}
-
   

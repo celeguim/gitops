@@ -1,10 +1,10 @@
 schema:
-	python3 tools/build_schema.py
+	python3 tools/schema_compiler.py
 
-lint:
+lint: schema
 	helm lint .
 
-template:
+template: schema
 	helm template demo .
 
 validate: schema lint template
