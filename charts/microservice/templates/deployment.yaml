@@ -27,18 +27,29 @@ spec:
           imagePullPolicy: {{ .Values.deployment.container.image.pullPolicy }}
 
           ports:
-            - containerPort: {{ .Values.deployment.container.port }}
+            - name: http
+              containerPort: {{ .Values.deployment.container.ports.http.containerPort }}
+              protocol: TCP
+
+          {{- with .Values.deployment.container.ports.management }}
+            - name: management
+              containerPort: {{ .containerPort }}
+              protocol: TCP
+          {{- end }}
 
           resources:
 {{ toYaml .Values.deployment.container.resources | indent 12 }}
 
+          {{- if .Values.deployment.container.probes.readiness.enabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.deployment.container.probes.readiness.path }}
-              port: {{ .Values.deployment.container.port }}
+              port: {{ .Values.deployment.container.probes.readiness.port }}
+          {{- end }}
 
+          {{- if .Values.deployment.container.probes.liveness.enabled }}
           livenessProbe:
             httpGet:
               path: {{ .Values.deployment.container.probes.liveness.path }}
-              port: {{ .Values.deployment.container.port }}
-              
+              port: {{ .Values.deployment.container.probes.liveness.port }}
+          {{- end }}

@@ -5,7 +5,7 @@ deployment:
 
     image:
       repository: celeguim/jvminfo
-      tag: v3
+      tag: v10
       pullPolicy: IfNotPresent
 
     ports:
@@ -17,6 +17,7 @@ deployment:
         containerPort: 9090
 
     resources:
+
       requests:
         cpu: 200m
         memory: 256Mi
@@ -37,12 +38,10 @@ deployment:
         path: /actuator/health/liveness
         port: management
 
-
 service:
   type: ClusterIP
   port: 8080
   targetPort: http
-
 
 autoscaling:
   enabled: true

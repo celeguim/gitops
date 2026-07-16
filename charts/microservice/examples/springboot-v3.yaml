@@ -13,10 +13,8 @@ deployment:
       http:
         containerPort: 8080
 
-      management:
-        containerPort: 9090
-
     resources:
+
       requests:
         cpu: 200m
         memory: 256Mi
@@ -30,19 +28,17 @@ deployment:
       readiness:
         enabled: true
         path: /actuator/health/readiness
-        port: management
+        port: http
 
       liveness:
         enabled: true
         path: /actuator/health/liveness
-        port: management
-
+        port: http
 
 service:
   type: ClusterIP
   port: 8080
   targetPort: http
-
 
 autoscaling:
   enabled: true
