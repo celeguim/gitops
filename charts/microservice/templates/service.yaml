@@ -9,7 +9,7 @@ spec:
   type: {{ .Values.service.type }}
 
   selector:
-    app: {{ .Release.Name }}
+    {{ include "microservice.labels" . | nindent 4 }}
 
   ports:
 
