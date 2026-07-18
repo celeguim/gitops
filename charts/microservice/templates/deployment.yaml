@@ -36,16 +36,12 @@ spec:
           resources:
 {{ toYaml .Values.deployment.container.resources | indent 12 }}
 
-          {{- if .Values.deployment.container.probes.readiness.enabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.deployment.container.probes.readiness.path }}
-              port: {{ .Values.deployment.container.probes.readiness.port }}
-          {{- end }}
+          {{ include "microservice.httpProbe" (dict
+              "type" "readinessProbe"
+              "probe" .Values.deployment.container.probes.readiness
+          ) | nindent 10 }}
 
-          {{- if .Values.deployment.container.probes.liveness.enabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.deployment.container.probes.liveness.path }}
-              port: {{ .Values.deployment.container.probes.liveness.port }}
-          {{- end }}
+          {{ include "microservice.httpProbe" (dict
+              "type" "livenessProbe"
+              "probe" .Values.deployment.container.probes.liveness
+          ) | nindent 10 }}
