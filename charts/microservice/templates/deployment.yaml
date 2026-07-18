@@ -9,7 +9,7 @@ spec:
 
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+  {{ include "microservice.selector" . | nindent 6 }}
 
   template:
     metadata:

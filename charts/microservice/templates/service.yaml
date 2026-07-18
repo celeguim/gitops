@@ -5,15 +5,10 @@ metadata:
 {{ include "microservice.metadata" . | nindent 2 }}
 
 spec:
-
   type: {{ .Values.service.type }}
 
   selector:
-    {{ include "microservice.labels" . | nindent 4 }}
+  {{ include "microservice.selector" . | nindent 4 }}
 
   ports:
-
-  - port: {{ .Values.service.port }}
-
-    targetPort: {{ .Values.service.targetPort }}
-    
+  {{ include "microservice.servicePorts" .Values.service.ports | nindent 4 }}

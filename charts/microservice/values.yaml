@@ -44,19 +44,36 @@ deployment:
 
 service:
   type: ClusterIP
-  port: 8080
-  targetPort: http
 
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+    - name: management
+      port: 9090
+      targetPort: management
 
-autoscaling:
+hpa:
   enabled: true
 
   minReplicas: 2
   maxReplicas: 5
 
-  cpu:
-    targetUtilization: 70
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
 
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+          
 serviceAccount:
   create: true
   name: ""
