@@ -8,9 +8,16 @@ teste pull-request.
 
 helm lint charts/microservice
 
-helm template jvminfo-v8 charts/microservice \
-  -f charts/microservice/examples/springboot-v8.yaml
+helm template jvminfo-v10 charts/microservice \
+  -f charts/microservice/examples/springboot-v10.yaml
+
+helm upgrade --install jvminfo-v10 charts/microservice \
+  -f charts/microservice/examples/springboot-v10.yaml
 
 helm upgrade --install jvminfo-v8 charts/microservice \
   -f charts/microservice/examples/springboot-v8.yaml
 
+helm upgrade --install jvminfo-v10 charts/microservice \
+  -f charts/microservice/examples/springboot-v10.yaml
+
+k rollout restart deploy/jvminfo-v10

@@ -2,9 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 
 metadata:
-  name: {{ .Release.Name }}
-  labels:
-    {{ include "microservice.labels" . | nindent 4 }}
+{{ include "microservice.metadata" . | nindent 2 }}
     
 spec:
 

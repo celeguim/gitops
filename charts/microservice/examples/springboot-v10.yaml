@@ -9,7 +9,6 @@ deployment:
       pullPolicy: IfNotPresent
 
     ports:
-
       http:
         containerPort: 8080
 
