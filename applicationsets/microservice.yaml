@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: emp
+  name: microservice
 
 spec:
 
@@ -10,7 +10,8 @@ spec:
 
     - git:
 
-        repoURL: git@github.com:celeguim/gitops.git
+        # repoURL: git@github.com:celeguim/gitops.git
+        repoURL: https://github.com/celeguim/gitops.git
 
         revision: HEAD
 
@@ -30,7 +31,8 @@ spec:
 
       source:
 
-        repoURL: git@github.com:celeguim/gitops.git
+        # repoURL: git@github.com:celeguim/gitops.git
+        repoURL: https://github.com/celeguim/gitops.git
 
         targetRevision: '{{targetRevision}}'
 
