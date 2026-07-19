@@ -5,7 +5,7 @@ deployment:
 
     image:
       repository: celeguim/jvminfo
-      tag: v8
+      tag: v9
       pullPolicy: IfNotPresent
 
     ports:
@@ -16,6 +16,7 @@ deployment:
         containerPort: 9090
 
     resources:
+
       requests:
         cpu: 200m
         memory: 256Mi
@@ -25,15 +26,16 @@ deployment:
         memory: 512Mi
 
     probes:
+
       readiness:
         enabled: true
         path: /actuator/health/readiness
-        port: http
+        port: management
 
       liveness:
         enabled: true
         path: /actuator/health/liveness
-        port: http
+        port: management
 
 service:
   type: ClusterIP

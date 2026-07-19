@@ -17,7 +17,10 @@ helm upgrade --install jvminfo-v10 charts/microservice \
 helm upgrade --install jvminfo-v8 charts/microservice \
   -f charts/microservice/examples/springboot-v8.yaml
 
-helm upgrade --install jvminfo-v10 charts/microservice \
-  -f charts/microservice/examples/springboot-v10.yaml
+helm install jvminfo-v9 charts/microservice \
+  -f charts/microservice/examples/springboot-v9.yaml
+
+helm upgrade --install jvminfo-v9 charts/microservice \
+  -f charts/microservice/examples/springboot-v9.yaml
 
 k rollout restart deploy/jvminfo-v10
