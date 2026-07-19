@@ -1,4 +1,0 @@
-app: app2
-clusterId: cluster2
-namespace: app2
-appPath: apps/app2/overlays/environment

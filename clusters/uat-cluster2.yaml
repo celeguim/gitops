@@ -1,0 +1,5 @@
+name: uat-cluster1
+
+labels:
+
+  environment: uat

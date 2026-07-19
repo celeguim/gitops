@@ -1,7 +1,10 @@
-.PHONY: validate render-app1 render-app2
-validate:
-	./scripts/validate.sh
-render-app1:
-	kustomize build --enable-helm apps/app1/overlays/environment
-render-app2:
-	kustomize build --enable-helm apps/app2/overlays/environment
+schema:
+	python3 tools/schema_compiler.py
+
+lint: schema
+	helm lint .
+
+template: schema
+	helm template demo .
+
+validate: schema lint template

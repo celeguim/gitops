@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: emp
+
+spec:
+
+  generators:
+
+    - git:
+
+        repoURL: git@github.com:celeguim/gitops.git
+
+        revision: HEAD
+
+        files:
+
+          - path: environments/*/*.yaml
+
+  template:
+
+    metadata:
+
+      name: '{{application}}-{{path.basename}}'
+
+    spec:
+
+      project: default
+
+      source:
+
+        repoURL: git@github.com:celeguim/gitops.git
+
+        targetRevision: '{{targetRevision}}'
+
+        path: charts/microservice
+
+        helm:
+
+          valueFiles:
+
+            - applications/{{application}}/values.yaml
+
+      destination:
+
+        server: https://kubernetes.default.svc
+
+        namespace: '{{namespace}}'
+
+      syncPolicy:
+
+        automated: {}

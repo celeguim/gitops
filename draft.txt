@@ -5,3 +5,22 @@ argocd admin initial-password -n argocd
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
 teste pull-request.
+
+helm lint charts/microservice
+
+helm template jvminfo-v10 charts/microservice \
+  -f charts/microservice/examples/springboot-v10.yaml
+
+helm upgrade --install jvminfo-v10 charts/microservice \
+  -f charts/microservice/examples/springboot-v10.yaml
+
+helm upgrade --install jvminfo-v8 charts/microservice \
+  -f charts/microservice/examples/springboot-v8.yaml
+
+helm install jvminfo-v9 charts/microservice \
+  -f charts/microservice/examples/springboot-v9.yaml
+
+helm upgrade --install jvminfo-v9 charts/microservice \
+  -f charts/microservice/examples/springboot-v9.yaml
+
+k rollout restart deploy/jvminfo-v10

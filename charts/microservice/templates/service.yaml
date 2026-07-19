@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
+
 metadata:
-  name: {{ .Release.Name }}
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
+{{ include "microservice.metadata" . | nindent 2 }}
+
 spec:
   type: {{ .Values.service.type }}
+
   selector:
-    app.kubernetes.io/instance: {{ .Release.Name }}
+  {{ include "microservice.selector" . | nindent 4 }}
+
   ports:
-    - name: http
-      port: {{ .Values.service.port }}
-      targetPort: http
+  {{ include "microservice.servicePorts" .Values.service.ports | nindent 4 }}

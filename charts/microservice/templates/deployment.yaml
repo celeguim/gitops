@@ -1,50 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  name: {{ .Release.Name }}
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ include "microservice.metadata" . | nindent 2 }}
+
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.deployment.replicaCount }}
+
   selector:
     matchLabels:
-      app.kubernetes.io/instance: {{ .Release.Name }}
+  {{ include "microservice.selector" . | nindent 6 }}
+
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ .Release.Name }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ .Release.Name }}
+
     spec:
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Release.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.containerPort }}
-          env:
-            - name: ENVIRONMENT
-              value: {{ .Values.environment | quote }}
-            - name: LOG_LEVEL
-              value: {{ .Values.logLevel | quote }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          volumeMounts:
-            - name: cache
-              mountPath: /var/cache/nginx
-            - name: run
-              mountPath: /var/run
-            - name: tmp
-              mountPath: /tmp
-      volumes:
-        - name: cache
-          emptyDir: {}
-        - name: run
-          emptyDir: {}
-        - name: tmp
-          emptyDir: {}
+      {{ include "microservice.container" (dict
+          "root" .
+          "container" .Values.deployment.container
+      ) | nindent 8 }}
