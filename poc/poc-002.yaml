@@ -2,21 +2,22 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: poc
+  name: poc-git-generator
   namespace: argocd
 
 spec:
   goTemplate: true
 
   generators:
-    - list:
-        elements:
-          - name: jvminfo
-            namespace: default
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+        directories:
+          - path: poc/*
 
   template:
     metadata:
-      name: "{{ .name }}"
+      name: "{{ .path.basename }}"
 
     spec:
       project: default
@@ -24,9 +25,8 @@ spec:
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: HEAD
-        path: charts/microservice
+        path: "{{ .path.path }}"
 
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{ .namespace }}"
-        
+        namespace: default
