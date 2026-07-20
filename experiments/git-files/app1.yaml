@@ -13,20 +13,15 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         directories:
-          - path: poc/*
+          - path: experiments/git-files/*.yaml
 
   template:
     metadata:
-      name: "{{ .path.basename }}"
+      name: "{{ .name }}"
 
     spec:
-      project: default
+      destination:
+        namespace: "{{ .namespace }}"
 
       source:
-        repoURL: https://github.com/celeguim/gitops.git
-        targetRevision: HEAD
-        path: "{{ .path.path }}"
-
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: default
+        path: "{{ .path }}"
