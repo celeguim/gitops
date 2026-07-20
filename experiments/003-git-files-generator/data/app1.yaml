@@ -1,3 +1,5 @@
 name: app1
 namespace: default
-path: applications/jvminfo
+
+application:
+  sourcePath: applications/jvminfo
