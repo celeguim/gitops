@@ -1,10 +1,13 @@
-No nosso próximo passo, eu sugiro fazermos exatamente isso com os arquivos reais da v2.3, comando por comando: abrir app1.yaml → abrir workloads.yaml → inspecionar a Application gerada → abrir o kustomization.yaml → executar helm template → executar kustomize build --enable-helm → comparar os manifests. Aí conseguimos seguir a app1 como se estivéssemos fazendo um debug de código, variável por variável.
+# argocd install
+kubectl create namespace argocd
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-k port-forward -n argocd service/argocd-server 8080:80
+kubectl port-forward -n argocd service/argocd-server 8080:80
 argocd admin initial-password -n argocd
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
-teste pull-request.
+argocd login localhost:8080 --insecure
+
 
 helm lint charts/microservice
 
@@ -24,3 +27,12 @@ helm upgrade --install jvminfo-v9 charts/microservice \
   -f charts/microservice/examples/springboot-v9.yaml
 
 k rollout restart deploy/jvminfo-v10
+
+
+-- argocd tests --
+# cadastre o repo no argo
+argocd repo add https://github.com/celeguim/gitops.git
+
+# deploy applicationset
+kubectl apply -f  applicationsets/microservice.yaml
+kubectl get applicationset microservice -n argocd -o yaml
