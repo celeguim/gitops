@@ -12,8 +12,8 @@ spec:
     - git:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
-        directories:
-          - path: experiments/git-files/*.yaml
+        files:
+          - path: experiments/003-git-files-generator/data/*.yaml
 
   template:
     metadata:
