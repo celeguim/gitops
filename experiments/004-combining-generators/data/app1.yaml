@@ -1,0 +1,5 @@
+name: exp-004-app1
+namespace: default
+
+application:
+  sourcePath: applications/jvminfo

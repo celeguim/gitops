@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: poc-git-generator
+  namespace: argocd
+
+spec:
+  goTemplate: true
+
+  elements:
+    - cluster: dev
+      namespace: dev
+
+    - cluster: uat
+      namespace: uat
+
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/celeguim/gitops.git
+              revision: HEAD
+              files:
+                - path: experiments/004-combining-generators/data/*.yaml
+
+          - list:
+              elements:
+                - cluster: dev
+                  namespace: dev
+
+                - cluster: uat
+                  namespace: uat
+
+  template:
+    metadata:
+      name: "{{ .name }}-{{ .cluster }}"
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/celeguim/gitops.git
+        targetRevision: HEAD
+        path: "{{ .application.sourcePath }}"
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ .namespace }}"
