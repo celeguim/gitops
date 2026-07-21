@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: exp-005-cluster-generator
+  namespace: argocd
+
+spec:
+  goTemplate: true
+
+  generators:
+    - clusters: {}
+
+  template:
+    metadata:
+      name: "cluster-{{ .name }}"
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/celeguim/gitops.git
+        targetRevision: HEAD
+        path: applications/jvminfo
+
+      destination:
+        server: "{{ .server }}"
+        namespace: default
