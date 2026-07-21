@@ -9,11 +9,19 @@ spec:
   goTemplate: true
 
   generators:
-    - clusters: {}
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/celeguim/gitops.git
+              revision: HEAD
+              files:
+                - path: experiments/005-cluster-generator/data/*.yaml
+
+          - clusters: {}
 
   template:
     metadata:
-      name: "cluster-{{ .name }}"
+      name: "{{ .appName }}-{{ .name }}"
 
     spec:
       project: default
@@ -21,7 +29,7 @@ spec:
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: HEAD
-        path: applications/jvminfo
+        path: "{{ .application.sourcePath }}"
 
       destination:
         server: "{{ .server }}"
