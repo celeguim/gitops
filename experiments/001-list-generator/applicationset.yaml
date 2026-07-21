@@ -2,18 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: poc-git-generator
+  name: exp-001-list-generator
   namespace: argocd
 
 spec:
   goTemplate: true
 
   generators:
-    - git:
-        repoURL: https://github.com/celeguim/gitops.git
-        revision: HEAD
-        files:
-          - path: experiments/003-git-files-generator/data/*.yaml
+    - list:
+        elements:
+          - name: app1
+            namespace: default
+            sourcePath: applications/jvminfo
 
   template:
     metadata:
@@ -25,7 +25,7 @@ spec:
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: HEAD
-        path: "{{ .application.sourcePath }}"
+        path: "{{ .sourcePath }}"
 
       destination:
         server: https://kubernetes.default.svc
