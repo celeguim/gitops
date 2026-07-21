@@ -11,7 +11,7 @@ spec:
   generators:
     - list:
         elements:
-          - name: app1
+          - name: Experiment-001
             namespace: default
             sourcePath: applications/jvminfo
 
