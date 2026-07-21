@@ -2,22 +2,23 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: exp-001-list-generator
+  name: exp-002-git-directory-generator
   namespace: argocd
 
 spec:
   goTemplate: true
 
   generators:
-    - list:
-        elements:
-          - name: experiment-001
-            namespace: default
-            sourcePath: applications/jvminfo
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+
+        directories:
+          - path: applications/*
 
   template:
     metadata:
-      name: "{{ .name }}"
+      name: "{{ .path.basename }}"
 
     spec:
       project: default
@@ -25,8 +26,8 @@ spec:
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: HEAD
-        path: "{{ .sourcePath }}"
+        path: "{{ .path.path }}"
 
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{ .namespace }}"
+        namespace: default

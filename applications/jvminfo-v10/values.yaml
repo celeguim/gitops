@@ -1,0 +1,5 @@
+name: jvminfo-v10
+chart: charts/microservice
+namespace: default
+releaseName: jvminfo-v10
+valuesFile: applications/jvminfo-v10/values.yaml
