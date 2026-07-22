@@ -1,5 +1,5 @@
 {
-  "name": "prd",
+  "environmentName": "prd",
   "project": "default",
   "targetRevision": "HEAD"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "uat",
+  "environmentName": "uat",
   "project": "default",
   "targetRevision": "HEAD"
 }

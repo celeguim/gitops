@@ -11,11 +11,12 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         files:
-          - path: environments/*.json
+          - path: environments/uat.json
 
   template:
     metadata:
-      name: "{{ .name }}"
+      # name: "{{ .name }}"
+      name: "{{ .environmentName }}"
     spec:
       project: default
       source:
