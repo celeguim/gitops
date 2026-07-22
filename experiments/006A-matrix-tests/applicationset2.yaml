@@ -11,13 +11,14 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         files:
-          - path: "environments/uat.yaml"
-          - path: "environments/prd.yaml"
+          # - path: "environments/uat.yaml"
+          # - path: "environments/prd.yaml"
+          - path: "environments/*.yaml"
 
   template:
     metadata:
       # name: "{{ .name }}"
-      name: "{{ .envName }}-{{ .appName }}"
+      name: "{{ .envName }}--{{ .application.name }}--{{ .application.appName }}"
     spec:
       project: default
       source:
