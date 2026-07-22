@@ -22,7 +22,7 @@ spec:
     metadata:
       # name: "{{ .name }}"
       # name: "{{ .envName }}--{{ .application.name }}--{{ .application.appName }}"
-      name: "{{ .envName }}--{{ .Appname }}"
+      name: "{{ .envName }}"
     spec:
       project: default
       source:
