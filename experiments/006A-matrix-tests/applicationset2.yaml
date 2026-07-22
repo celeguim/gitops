@@ -11,8 +11,8 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         files:
-          - path: "environments/*.yaml"
-          # - path: environments/prd.json
+          - path: "environments/uat.yaml"
+          - path: "environments/uat.json"
 
   template:
     metadata:
