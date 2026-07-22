@@ -12,7 +12,7 @@ spec:
         revision: HEAD
         files:
           - path: "environments/uat.yaml"
-          - path: "environments/uat.json"
+          - path: "environments/prd.yaml"
 
   template:
     metadata:
