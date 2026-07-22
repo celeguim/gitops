@@ -1,9 +1,6 @@
 name: prd
-
+environmentName: prd
 targetRevision: prd
-
 project: prd
-
 clusterSelector:
   environment: prd
-  

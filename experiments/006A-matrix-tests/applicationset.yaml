@@ -8,24 +8,33 @@ metadata:
 spec:
   goTemplate: true
 
-  generators:
-    - matrix:
-        generators:
-          - git:
-              repoURL: https://github.com/celeguim/gitops.git
-              revision: HEAD
-              files:
-                - path: applications/*.yaml
+  # generators:
+  #   - matrix:
+  #       generators:
+  #         - git:
+  #             repoURL: https://github.com/celeguim/gitops.git
+  #             revision: HEAD
+  #             files:
+  #               - path: applications/*.yaml
 
-          - git:
-              repoURL: https://github.com/celeguim/gitops.git
-              revision: HEAD
-              files:
-                - path: environments/*.yaml
-                
+  #         - git:
+  #             repoURL: https://github.com/celeguim/gitops.git
+  #             revision: HEAD
+  #             files:
+  #               - path: environments/*.yaml
+  generators:
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+        files:
+          - path: environments/*.yaml
+                          
   template:
     metadata:
-      name: "{{ .name }}-{{ .environmentName }}"
+      name: "{{ .environmentName }}"
+      annotations:
+        debug1: '{{ toJson . }}'
+        debug2: "{{ . }}"
 
     spec:
       project: default
