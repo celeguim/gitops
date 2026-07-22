@@ -1,0 +1,9 @@
+name: prd
+
+targetRevision: prd
+
+project: prd
+
+clusterSelector:
+  environment: prd
+  

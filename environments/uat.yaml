@@ -1,0 +1,9 @@
+name: uat
+
+targetRevision: uat
+
+project: uat
+
+clusterSelector:
+  environment: uat
+  
