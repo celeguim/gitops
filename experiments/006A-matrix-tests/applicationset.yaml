@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: exp-005-cluster-generator
+  name: exp-006a
   namespace: argocd
 
 spec:

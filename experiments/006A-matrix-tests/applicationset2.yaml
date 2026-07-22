@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: exp-006-test
+  namespace: argocd
+spec:
+  goTemplate: true
+
+  generators:
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+        files:
+          - path: environments/*.json
+
+  template:
+    metadata:
+      name: "{{ .name }}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/celeguim/gitops.git
+        targetRevision: HEAD
+        path: applications/jvminfo
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default
+
