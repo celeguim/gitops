@@ -1,6 +1,7 @@
-environmentName: uat
+name: uat
+
+project: default
 targetRevision: uat
-project: uat
+
 clusterSelector:
   environment: uat
-name: uat

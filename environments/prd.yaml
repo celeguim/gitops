@@ -1,6 +1,7 @@
 name: prd
-environmentName: prd
+
+project: default
 targetRevision: prd
-project: prd
+
 clusterSelector:
   environment: prd

@@ -2,42 +2,32 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 
 metadata:
-  name: exp-005-cluster-generator
+  name: exp-006-environment-generator
   namespace: argocd
 
 spec:
   goTemplate: true
 
   generators:
-    - matrix:
-        generators:
-          - matrix:
-              generators:
-          - git:
-              repoURL: https://github.com/celeguim/gitops.git
-              revision: HEAD
-              files:
-                - path: experiments/005-cluster-generator/data/*.yaml
-          - git:
-              repoURL: https://github.com/celeguim/gitops.git
-              revision: HEAD
-              files:
-                - path: experiments/005-cluster-generator/data/*.yaml
-
-          - clusters: {}
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+        files:
+          - path: environments/*.yaml
 
   template:
     metadata:
-      name: "{{ .appName }}-{{ .name }}"
+      name: "{{ .name }}"
 
     spec:
-      project: default
+      project: "{{ .project }}"
 
       source:
         repoURL: https://github.com/celeguim/gitops.git
-        targetRevision: HEAD
-        path: "{{ .application.sourcePath }}"
+        targetRevision: "{{ .targetRevision }}"
+        path: applications/jvminfo
 
       destination:
-        server: "{{ .server }}"
+        server: https://kubernetes.default.svc
         namespace: default
+        
