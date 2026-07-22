@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       # name: "{{ .name }}"
-      name: "{{ .environmentName }}"
+      name: "{{ .environment }}"
     spec:
       project: default
       source:
