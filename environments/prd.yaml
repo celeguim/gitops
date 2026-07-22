@@ -1,4 +1,4 @@
-name: prd
+envName: prd-yaml
 
 project: default
 targetRevision: prd

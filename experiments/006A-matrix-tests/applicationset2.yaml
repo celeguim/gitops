@@ -11,13 +11,13 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         files:
-          - path: "environments/*.json"
+          - path: "environments/*.yaml"
           # - path: environments/prd.json
 
   template:
     metadata:
       # name: "{{ .name }}"
-      name: "{{ .environment }}"
+      name: "{{ .envName }}-{{ .appName }}"
     spec:
       project: default
       source:

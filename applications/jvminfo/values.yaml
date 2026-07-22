@@ -1,4 +1,4 @@
-name: jvminfo
+appName: jvminfo
 
 chart: charts/microservice
 namespace: default
