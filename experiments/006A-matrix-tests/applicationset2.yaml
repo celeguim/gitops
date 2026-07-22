@@ -11,14 +11,18 @@ spec:
         repoURL: https://github.com/celeguim/gitops.git
         revision: HEAD
         files:
-          # - path: "environments/uat.yaml"
-          # - path: "environments/prd.yaml"
           - path: "environments/*.yaml"
+    - git:
+        repoURL: https://github.com/celeguim/gitops.git
+        revision: HEAD
+        files:
+          - path: "applications/*.yaml"
 
   template:
     metadata:
       # name: "{{ .name }}"
-      name: "{{ .envName }}--{{ .application.name }}--{{ .application.appName }}"
+      # name: "{{ .envName }}--{{ .application.name }}--{{ .application.appName }}"
+      name: "{{ .envName }}--{{ .Appname }}"
     spec:
       project: default
       source:
@@ -28,4 +32,3 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: default
-
