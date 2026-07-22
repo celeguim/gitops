@@ -1,9 +1,5 @@
-name: uat
-
+environmentName: uat
 targetRevision: uat
-
 project: uat
-
 clusterSelector:
   environment: uat
-  

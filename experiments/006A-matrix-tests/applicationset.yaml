@@ -25,7 +25,7 @@ spec:
                 
   template:
     metadata:
-      name: "{{ .appName }}-{{ .name }}"
+      name: "{{ .name }}-{{ .environmentName }}"
 
     spec:
       project: default
@@ -33,7 +33,7 @@ spec:
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: HEAD
-        path: "{{ .application.sourcePath }}"
+        path: applications/jvminfo
 
       destination:
         server: https://kubernetes.default.svc
