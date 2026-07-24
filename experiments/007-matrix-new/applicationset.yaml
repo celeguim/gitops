@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: exp-006-test
+  name: exp-007-matrix-new
   namespace: argocd
 spec:
   goTemplate: true
@@ -26,7 +26,7 @@ spec:
     metadata:
       name: "{{ .appName }}-{{ .clusterName }}"
     spec:
-      project: "{{ .environment.project }}"
+      project: default
       source:
         repoURL: https://github.com/celeguim/gitops.git
         targetRevision: "{{ .environment.targetRevision }}"

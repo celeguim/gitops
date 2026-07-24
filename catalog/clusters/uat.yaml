@@ -1,0 +1,3 @@
+clusterName: uat-cluster2
+server: https://kubernetes.default.svc
+environment: uat

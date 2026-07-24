@@ -1,0 +1,5 @@
+name: prd
+project: prd
+targetRevision: prd
+namespace: default
+syncPolicy: automated
