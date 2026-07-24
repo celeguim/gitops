@@ -1,5 +1,7 @@
-name: uat-cluster1
+clusterName: uat-cluster1
+server: https://kubernetes.default.svc
 
-labels:
-
-  environment: uat
+environment:
+  name: uat
+  project: uat
+  targetRevision: uat

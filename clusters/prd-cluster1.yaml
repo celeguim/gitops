@@ -1,5 +1,8 @@
-name: prd-cluster1
+clusterName: prd-cluster1
 
-labels:
+server: https://kubernetes.default.svc
 
-  environment: prd
+environment:
+  name: prd
+  project: prd
+  targetRevision: prd

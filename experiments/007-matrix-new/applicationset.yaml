@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: exp-006-test
+  namespace: argocd
+spec:
+  goTemplate: true
+
+  generators:
+  - matrix:
+      generators:
+
+      - git:
+          repoURL: https://github.com/celeguim/gitops.git
+          revision: HEAD
+          files:
+          - path: "applications/*.yaml"
+
+      - git:
+          repoURL: https://github.com/celeguim/gitops.git
+          revision: HEAD
+          files:
+          - path: "clusters/*.yaml"
+
+  template:
+    metadata:
+      name: "{{ .appName }}-{{ .clusterName }}"
+    spec:
+      project: "{{ .environment.project }}"
+      source:
+        repoURL: https://github.com/celeguim/gitops.git
+        targetRevision: "{{ .environment.targetRevision }}"
+        path: "{{ .chart }}"
+        helm:
+          valueFiles:
+          - "{{ .valuesFile }}"        
+      destination:
+        server: "{{ .server }}"
+        namespace: "{{ .namespace }}"
