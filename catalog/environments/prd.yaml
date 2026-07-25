@@ -1,4 +1,4 @@
-name: prd
+envName: prd
 project: prd
 targetRevision: prd
 namespace: default

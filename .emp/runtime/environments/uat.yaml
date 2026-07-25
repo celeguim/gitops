@@ -1,0 +1,4 @@
+EnvName: uat
+Namespace: default
+Project: uat
+TargetRevision: uat

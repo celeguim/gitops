@@ -1,0 +1,4 @@
+EnvName: prd
+Namespace: default
+Project: prd
+TargetRevision: prd

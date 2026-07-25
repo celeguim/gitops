@@ -1,0 +1,3 @@
+ClusterName: prd-cluster1
+Environment: prd
+Server: https://kubernetes.default.svc

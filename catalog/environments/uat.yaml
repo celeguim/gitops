@@ -1,4 +1,4 @@
-name: uat
+envName: uat
 project: uat
 targetRevision: uat
 namespace: default
