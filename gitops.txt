@@ -1,0 +1,155 @@
+.
+├── ARGOCD-UAT-VALIDATION.md
+├── Makefile
+├── README.md
+├── applications
+│   ├── jvminfo
+│   │   └── values.yaml
+│   └── jvminfo.yaml
+├── applicationsets
+│   └── microservice.yaml
+├── apps
+│   ├── jvminfo-v10
+│   │   ├── base
+│   │   │   ├── kustomization.yaml
+│   │   │   └── values.yaml
+│   │   └── overlays
+│   │       └── environment
+│   │           ├── deployment-patch.yaml
+│   │           └── kustomization.yaml
+│   └── jvminfo-v9
+│       ├── base
+│       │   ├── kustomization.yaml
+│       │   └── values.yaml
+│       └── overlays
+│           └── environment
+│               ├── deployment-patch.yaml
+│               └── kustomization.yaml
+├── argocd
+│   ├── applicationsets
+│   │   ├── kustomization.yaml
+│   │   └── workloads.yaml
+│   ├── bootstrap
+│   │   ├── argocd-cm-patch.yaml
+│   │   └── root-app.yaml
+│   ├── projects
+│   │   ├── environment-project.yaml
+│   │   └── kustomization.yaml
+│   └── root
+│       └── kustomization.yaml
+├── assignments
+│   ├── prd
+│   └── uat
+├── catalog
+│   ├── applications
+│   │   ├── jvminfo
+│   │   │   └── values.yaml
+│   │   └── jvminfo.yaml
+│   ├── clusters
+│   │   ├── prd.yaml
+│   │   └── uat.yaml
+│   └── environments
+│       ├── prd.yaml
+│       └── uat.yaml
+├── charts
+│   └── microservice
+│       ├── Chart.yaml
+│       ├── README.md
+│       ├── examples
+│       │   ├── springboot-v10.yaml
+│       │   └── springboot-v9.yaml
+│       ├── templates
+│       │   ├── _containers.tpl
+│       │   ├── _helper.tpl
+│       │   ├── _hpa_metrics.tpl
+│       │   ├── _image.tpl
+│       │   ├── _labels.tpl
+│       │   ├── _metadata.tpl
+│       │   ├── _ports.tpl
+│       │   ├── _resources.tpl
+│       │   ├── _selector.tpl
+│       │   ├── _service.tpl
+│       │   ├── deployment.yaml
+│       │   ├── hpa.yaml
+│       │   └── service.yaml
+│       ├── values.schema.json-disabled
+│       └── values.yaml
+├── clusters
+│   ├── prd-cluster1.yaml
+│   └── uat-cluster1.yaml
+├── docs
+│   ├── ARCHITECTURE-v2.3.md
+│   ├── GitOps-ArgoCD-v2.3-Architecture.docx
+│   ├── GitOps-ArgoCD-v2.3-Validation-Troubleshooting.docx
+│   ├── VALIDATION-v2.3.md
+│   ├── adr
+│   │   ├── ADR-0001-EMP-Catalog-Rendering-Architecture.md
+│   │   └── ADR-Architecture-Decision-Record.md
+│   ├── api
+│   ├── architecture
+│   │   ├── README.md
+│   │   ├── arquitetura.md
+│   │   └── design.md
+│   ├── design
+│   ├── experiments
+│   │   ├── 001-list-generator.md
+│   │   ├── 002-git-directory-generator.md
+│   │   ├── 003-git-files-generator.md
+│   │   ├── 004-cluster-generator.md
+│   │   ├── EMP-Experiments-Roadmap.md
+│   │   └── README.md
+│   ├── internal
+│   ├── learning
+│   ├── operations
+│   │   └── bootstrap-cluster.md
+│   └── platform-maturity.md
+├── draft.txt
+├── environments
+│   ├── prd.yaml
+│   └── uat.yaml
+├── experiments
+│   ├── 001-list-generator
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   ├── 002-git-directory-generator
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   ├── 003-git-files-generator
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   │       ├── app1.yaml
+│   │       └── app2.yaml
+│   ├── 004-combining-generators
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   │       ├── app1.yaml
+│   │       └── app2.yaml
+│   ├── 005-cluster-generator
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   │       ├── app1.yaml
+│   │       └── app2.yaml
+│   ├── 006-matrix-tests
+│   │   ├── applicationset.yaml
+│   │   └── data
+│   │       ├── app1.yaml
+│   │       └── app2.yaml
+│   ├── 006A-matrix-tests
+│   │   ├── applicationset.yaml
+│   │   ├── applicationset2.yaml
+│   │   └── data
+│   │       ├── app1.yaml
+│   │       └── app2.yaml
+│   └── 007-matrix-new
+│       ├── applicationset.yaml
+│       └── data
+│           ├── app1.yaml
+│           └── app2.yaml
+├── gitops.txt
+├── scripts
+│   ├── check-isolation.sh
+│   └── validate.sh
+└── tools
+    └── schema_compiler.py
+
+60 directories, 93 files
