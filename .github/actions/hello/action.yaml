@@ -14,3 +14,7 @@ runs:
 
       run: |
         echo "Hello ${{ inputs.name }}"
+
+outputs:
+  message:
+    value: ${{ steps.hello.outputs.message }}
