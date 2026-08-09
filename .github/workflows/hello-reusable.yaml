@@ -7,6 +7,10 @@ on:
         required: true
         type: string
 
+      repos:
+        required: true
+        type: string
+
 jobs:
   hello:
     runs-on: ubuntu-latest
@@ -17,3 +21,4 @@ jobs:
           echo "Hello ${{ inputs.name }}"
           echo "Repository: ${{ github.repository }}"
           echo "Workflow: ${{ github.workflow }}"
+          echo "Repos: ${{ inputs.repos }}"
