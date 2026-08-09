@@ -1,0 +1,16 @@
+name: Hello Composite
+
+description: Hello World Composite
+
+inputs:
+  name:
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - shell: bash
+
+      run: |
+        echo "Hello ${{ inputs.name }}"
