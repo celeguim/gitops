@@ -22,3 +22,9 @@ jobs:
           echo "Repository: ${{ github.repository }}"
           echo "Workflow: ${{ github.workflow }}"
           echo "Repos: ${{ inputs.repos }}"
+
+      - name: Call Hello Composite Action
+        uses: ./.github/actions/hello
+        with:
+          name: ${{ inputs.name }}
+          repos: ${{ inputs.repos }}
