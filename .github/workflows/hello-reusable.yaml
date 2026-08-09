@@ -24,7 +24,6 @@ jobs:
           echo "Repos: ${{ inputs.repos }}"
 
       - name: Call Hello Composite Action
-        uses: ./.github/actions/hello
+        uses: celeguim/gitops/.github/actions/hello
         with:
           name: ${{ inputs.name }}
-          repos: ${{ inputs.repos }}
