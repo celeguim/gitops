@@ -1,19 +1,28 @@
 name: Cosign Sign
-description: Sign a container image with Cosign
 
 inputs:
   image:
-    description: Container image reference to sign
+    description: Image digest
     required: true
 
   key:
-    description: Cosign signing key
+    description: Signing key
     required: true
 
 runs:
   using: composite
 
   steps:
+    - name: Validate image
+      shell: bash
+      run: |
+        if [[ "${{ inputs.image }}" != *@sha256:* ]]; then
+          echo "::error::Image must be referenced by digest"
+          exit 1
+        fi
+
+        echo "Image: ${{ inputs.image }}"
+
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3
 
