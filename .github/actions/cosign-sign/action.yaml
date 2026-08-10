@@ -23,6 +23,14 @@ runs:
 
         echo "Image: ${{ inputs.image }}"
 
+    - name: Validate key
+      shell: bash
+      run: |
+        if [[ -z "${{ inputs.key }}" ]]; then
+          echo "::error::Signing key is required"
+          exit 1
+        fi
+
     - name: Install Cosign
       uses: sigstore/cosign-installer@v3
 
