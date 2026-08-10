@@ -1,0 +1,26 @@
+name: Cosign Sign
+description: Sign a container image with Cosign
+
+inputs:
+  image:
+    description: Container image reference to sign
+    required: true
+
+  key:
+    description: Cosign signing key
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3
+
+    - name: Sign image
+      shell: bash
+      run: |
+        cosign sign \
+          --yes \
+          --key "${{ inputs.key }}" \
+          "${{ inputs.image }}"
