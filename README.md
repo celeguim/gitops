@@ -1,95 +1,257 @@
-# GitOps v2 — Argo CD, EKS, Helm local e Kustomize
+# Enterprise Microservice Platform (EMP)
 
-## Topologia
+> A Kubernetes-native GitOps platform for deploying microservices at scale using Helm and Argo CD.
+
+---
+
+## Overview
+
+Enterprise Microservice Platform (EMP) is an opinionated GitOps platform designed to simplify the deployment and lifecycle management of Kubernetes workloads.
+
+EMP combines:
+
+- Helm
+- Argo CD
+- ApplicationSets
+- GitOps
+- Multi-cluster deployments
+
+while keeping applications **environment agnostic**.
+
+Applications are defined once and promoted through environments using Git.
+
+---
+
+# Why EMP?
+
+Traditional GitOps repositories usually duplicate application definitions across environments:
+
+apps/
+├── dev/
+├── uat/
+└── prd/
+
+EMP follows a different approach.
+
+Applications are defined only once.
+
+Environments only control deployment targets and promotion.
+
+This reduces duplication, improves consistency, and enables true GitOps promotion workflows.
+
+---
+
+# Design Principles
+
+- Kubernetes Native
+- GitOps First
+- Helm Minimal
+- API First
+- Environment Agnostic
+- Multi-Cluster Ready
+
+---
+
+# Repository Layout
+
+```
+gitops/
+
+├── charts/
+│   └── microservice/
+│
+├── apps/
+│
+├── assignments/
+│
+├── clusters/
+│
+└── applicationsets/
+```
+
+---
+
+# Architecture
 
 ```text
-argocd-uat
-├── uat-cluster1  [environment=uat, cluster-id=cluster1]
-└── uat-cluster2  [environment=uat, cluster-id=cluster2]
+                 Git Repository
+                        │
+        ┌───────────────┼────────────────┐
+        │               │                │
+        ▼               ▼                ▼
 
-argocd-prd
-├── prd-cluster1  [environment=prd, cluster-id=cluster1]
-└── prd-cluster2  [environment=prd, cluster-id=cluster2]
+   Applications     Assignments      Clusters
+
+        └───────────────┬────────────────┘
+                        │
+                        ▼
+
+                 ApplicationSet
+
+                        │
+                        ▼
+
+              Argo CD Applications
+
+                        │
+                        ▼
+
+                  Helm Chart
+
+                        │
+                        ▼
+
+                  Kubernetes
 ```
 
-Distribuição:
+---
 
-```text
-cluster1 -> app1, app2
-cluster2 -> app2
+# Promotion Flow
+
+Applications are defined once.
+
+Environments decide **where** and **when** they are deployed.
+
+```
+Developer
+
+↓
+
+Commit
+
+↓
+
+branch: uat
+
+↓
+
+ArgoCD UAT
+
+↓
+
+Validation
+
+↓
+
+Merge
+
+↓
+
+branch: prd
+
+↓
+
+ArgoCD PRD
 ```
 
-## Branches
+No deployment manifests are modified during promotion.
 
-- `uat`: Argo UAT observa somente `uat`
-- `prd`: Argo PRD observa somente `prd`
+Git is the single source of truth.
 
-O `clusterId` é lógico. O Cluster Generator resolve o cluster EKS físico pelos labels do Secret registrado no Argo CD.
+---
 
-## Helm + Kustomize
+# Repository Responsibilities
 
-O chart local está em `charts/microservice`.
+## charts/
 
-Cada app possui uma base Kustomize que chama o chart local via `helmCharts`. O overlay `environment` aplica o patch específico do branch.
+Reusable Helm charts.
 
-## Configuração necessária no Argo CD
+Responsible for **how** applications are deployed.
 
-Antes do bootstrap, habilite Helm no build do Kustomize:
+---
 
-```bash
-kubectl --context ARGO-UAT apply -f argocd/bootstrap/argocd-cm-patch.yaml
-kubectl --context ARGO-UAT -n argocd rollout restart deployment argocd-repo-server
+## apps/
+
+Application catalog.
+
+Responsible for **what** is deployed.
+
+Applications are defined only once.
+
+---
+
+## assignments/
+
+Deployment assignments.
+
+Responsible for **where** an application runs.
+
+---
+
+## clusters/
+
+Cluster inventory.
+
+Responsible for **which** clusters exist.
+
+---
+
+## applicationsets/
+
+Automatically generates Argo CD Applications.
+
+---
+
+# Current MVP
+
+Implemented resources:
+
+- Deployment
+- Service
+- HorizontalPodAutoscaler
+
+---
+
+# Roadmap
+
+- Ingress
+- NetworkPolicy
+- ConfigMap
+- Secret
+- ServiceAccount (IRSA)
+- PodDisruptionBudget
+- ServiceMonitor
+- PodMonitor
+- Argo Rollouts
+- CronJobs
+- Jobs
+
+---
+
+# Vision
+
+EMP treats Git as the deployment API.
+
+```
+Git
+
+↓
+
+Application
+
+↓
+
+Assignment
+
+↓
+
+Cluster
+
+↓
+
+ApplicationSet
+
+↓
+
+Helm
+
+↓
+
+Kubernetes
 ```
 
-Repita no Argo PRD.
+The same application can be promoted across multiple environments without duplication.
 
-## Registrar e rotular clusters
+Deploy once.
 
-Exemplo UAT, após registrar os clusters no Argo:
-
-```bash
-kubectl --context ARGO-UAT -n argocd label secret SECRET_CLUSTER1 \
-  environment=uat cluster-id=cluster1
-
-kubectl --context ARGO-UAT -n argocd label secret SECRET_CLUSTER2 \
-  environment=uat cluster-id=cluster2
-```
-
-No PRD use `environment=prd`.
-
-## Repo URL
-
-Troque `https://git.example.com/platform/gitops.git` pela URL real do repositório em `argocd/`.
-
-## Bootstrap
-
-```bash
-git checkout uat
-kubectl --context ARGO-UAT -n argocd apply -f argocd/bootstrap/root-app.yaml
-```
-
-Para PRD:
-
-```bash
-git checkout prd
-kubectl --context ARGO-PRD -n argocd apply -f argocd/bootstrap/root-app.yaml
-```
-
-## Validação
-
-Dependências locais: `helm`, `kustomize`, `yamllint` e `kubeconform`.
-
-```bash
-make validate
-```
-
-## Isolamento
-
-A fronteira principal não é o branch. São duas instâncias Argo CD separadas e cada uma deve registrar somente os clusters do próprio ambiente. O `AppProject` também limita os destinos pelos nomes físicos dos clusters.
-
-O script abaixo detecta Secret de cluster com label de ambiente incorreto:
-
-```bash
-./scripts/check-isolation.sh uat
-./scripts/check-isolation.sh prd
-```
+Promote with Git.

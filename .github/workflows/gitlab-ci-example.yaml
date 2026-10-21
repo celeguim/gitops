@@ -1,7 +1,0 @@
-# - make schema
-
-# - git diff --exit-code
-
-# - make lint
-
-# - make template

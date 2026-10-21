@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: poc
+  namespace: argocd
+
+spec:
+  goTemplate: true
+
+  generators:
+    - list:
+        elements:
+          - name: jvminfo
+            namespace: default
+
+  template:
+    metadata:
+      name: "{{ .name }}"
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/celeguim/gitops.git
+        targetRevision: HEAD
+        path: charts/microservice
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ .namespace }}"
+        

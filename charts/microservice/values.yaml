@@ -2,12 +2,19 @@ deployment:
   replicaCount: 2
 
   container:
+
     image:
       repository: celeguim/jvminfo
       tag: v3
       pullPolicy: IfNotPresent
 
-    port: 8080
+    ports:
+
+      http:
+        containerPort: 8080
+
+      management:
+        containerPort: 9090
 
     resources:
       requests:
@@ -22,24 +29,51 @@ deployment:
       readiness:
         enabled: true
         path: /actuator/health/readiness
+        port: management
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        timeoutSeconds: 2
+        successThreshold: 1
+        failureThreshold: 3
 
       liveness:
         enabled: true
         path: /actuator/health/liveness
+        port: management
+
 
 service:
   type: ClusterIP
-  port: 8080
-  targetPort: 8080
 
-autoscaling:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+    - name: management
+      port: 9090
+      targetPort: management
+
+hpa:
   enabled: true
+
   minReplicas: 2
   maxReplicas: 5
 
-  cpu:
-    targetUtilization: 70
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
 
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+          
 serviceAccount:
   create: true
   name: ""

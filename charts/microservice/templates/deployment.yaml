@@ -2,16 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: {{ .Release.Name }}
-  labels:
-    app: {{ .Release.Name }}
+{{ include "microservice.metadata" . | nindent 2 }}
 
 spec:
   replicas: {{ .Values.deployment.replicaCount }}
 
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+  {{ include "microservice.selector" . | nindent 6 }}
 
   template:
     metadata:
@@ -20,25 +18,7 @@ spec:
 
     spec:
       containers:
-        - name: app
-
-          image: "{{ .Values.deployment.container.image.repository }}:{{ .Values.deployment.container.image.tag }}"
-
-          imagePullPolicy: {{ .Values.deployment.container.image.pullPolicy }}
-
-          ports:
-            - containerPort: {{ .Values.deployment.container.port }}
-
-          resources:
-{{ toYaml .Values.deployment.container.resources | indent 12 }}
-
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.deployment.container.probes.readiness.path }}
-              port: {{ .Values.deployment.container.port }}
-
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.deployment.container.probes.liveness.path }}
-              port: {{ .Values.deployment.container.port }}
-              
+      {{ include "microservice.container" (dict
+          "root" .
+          "container" .Values.deployment.container
+      ) | nindent 8 }}
